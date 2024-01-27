@@ -1,5 +1,3 @@
-# TODO: fix annotated_video.mp4 (it does not open probably because it is corrupted. Hex editor showed little in the .mp4)
-
 from collections import defaultdict
 from pathlib import Path
 import cv2
@@ -15,17 +13,12 @@ folder_number = '0'
 model = YOLO('models/yolov8n-pose.pt')
 
 # Define video source
-# TODO: determine what input should be used, make sure it works with the rest of the code (videowriters and such)
 video_path = str(Path('data/video/swing_short.mp4'))
 video_source = video_path
-'''if video_source == 0: 
-    video_source = 0'''
 
 cap = cv2.VideoCapture(video_source)
 
-# Get the video's width, height, and frames per second
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+# Get the video's frames per second
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 # Define the directory
@@ -38,9 +31,10 @@ if not dir_path.exists():
 # Define the full path for the video file
 video_path = dir_path / 'annotated_video.mp4'
 
-# Define the codec and VideoWriter object
-# Define the codec and VideoWriter object
-out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'XVID'), fps, (int(width), int(height)))
+# Initialize VideoWriter with initial frame size
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
 
 # Store the center and wrist history
 center_history = defaultdict(lambda: [])
@@ -99,10 +93,17 @@ while cap.isOpened():
             scale_factor = 0.5
             annotated_frame = cv2.resize(annotated_frame, None, fx=scale_factor, fy=scale_factor)
 
+            # Dynamically update VideoWriter resolution
+            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            out.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+            out.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+
             # Write the frame to the output video file
             out.write(annotated_frame)
 
             # Display the annotated frame
+                        # Display the annotated frame
             cv2.imshow("YOLOv8 Tracking", annotated_frame)
 
             # Break the loop if 'q' is pressed
