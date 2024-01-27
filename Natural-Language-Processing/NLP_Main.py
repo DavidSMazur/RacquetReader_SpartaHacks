@@ -7,6 +7,8 @@ from langchain.agents import AgentType
 from langchain.agents import initialize_agent
 import os
 
+input="I like tomatoes, what should I eat?"
+
 load_dotenv()
 
 model = VertexAI(model_name="gemini-pro")
@@ -25,12 +27,12 @@ llm = VertexAI(
     top_k=40,
 )
 
-res = chat([
+out = chat([
         SystemMessage(
             content="You are a nice AI bot that helps a user figure out what to eat in one short sentence"
         ),
-        HumanMessage(content="I like tomatoes, what should I eat?"),
+        HumanMessage(content=input),
     ])
 
-print(res.content)
+print(out.content)
 
