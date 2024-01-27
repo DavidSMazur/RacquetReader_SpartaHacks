@@ -12,6 +12,10 @@ width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = cap.get(cv2.CAP_PROP_FPS)
 
+# Define the desired resized width and height
+resized_width = int(width * 0.5)  # You can adjust the scaling factor as needed
+resized_height = int(height * 0.5)
+
 # Iterate through available codecs and try writing a small video
 codecs_to_try = ['MJPG', 'mp4v', 'H264']
 for codec in codecs_to_try:
@@ -21,14 +25,18 @@ for codec in codecs_to_try:
 
         # Initialize VideoWriter with the codec
         fourcc = cv2.VideoWriter_fourcc(*codec)
-        out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+        out = cv2.VideoWriter(output_path, fourcc, fps, (resized_width, resized_height))  # Use resized dimensions
 
-        # Write a few frames
-        for _ in range(30):
+        # Write all frames
+        while True:
             ret, frame = cap.read()
             if not ret:
                 break
-            out.write(frame)
+
+            # Resize the frame
+            frame_resized = cv2.resize(frame, (resized_width, resized_height))
+
+            out.write(frame_resized)
 
         # Release VideoWriter
         out.release()

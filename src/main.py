@@ -91,7 +91,8 @@ while cap.isOpened():
 
             # Resize the annotated frame for display
             scale_factor = 0.5
-            annotated_frame = cv2.resize(annotated_frame, None, fx=scale_factor, fy=scale_factor)
+            annotated_frame = cv2.resize(annotated_frame, None) #, fx=scale_factor, fy=scale_factor)
+
 
             # Dynamically update VideoWriter resolution
             width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
