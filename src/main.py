@@ -29,12 +29,12 @@ if not dir_path.exists():
     dir_path.mkdir(parents=True, exist_ok=True)
 
 # Define the full path for the video file
-video_path = dir_path / 'annotated_video.mp4'
+video_path = dir_path / 'output_video.mp4'
 
 # Initialize VideoWriter with initial frame size
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'MJPG'), fps, (width, height))
+out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'H264'), fps, (width, height))
 
 # Store the center and wrist history
 center_history = defaultdict(lambda: [])
@@ -103,7 +103,6 @@ while cap.isOpened():
             out.write(annotated_frame)
 
             # Display the annotated frame
-                        # Display the annotated frame
             cv2.imshow("YOLOv8 Tracking", annotated_frame)
 
             # Break the loop if 'q' is pressed
