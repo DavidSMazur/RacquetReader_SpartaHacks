@@ -39,7 +39,8 @@ if not dir_path.exists():
 video_path = dir_path / 'annotated_video.mp4'
 
 # Define the codec and VideoWriter object
-out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'H264'), fps, (int(width), int(height)))
+# Define the codec and VideoWriter object
+out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'XVID'), fps, (int(width), int(height)))
 
 # Store the center and wrist history
 center_history = defaultdict(lambda: [])
