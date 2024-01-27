@@ -11,20 +11,26 @@ load_dotenv()
 
 model = VertexAI(model_name="gemini-pro")
 
-memory = ConversationBufferMemory(memory_key="chat_history")
 agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
 llm = VertexAI(
-    agent=agent,
     model_name=model,
     llm=VertexAI(), 
-    memory=memory, 
-
+    verbose=True
+    
+    memory="chat_history", 
     max_output_tokens=256,
     temperature=0.1,
     top_p=0.8,
     top_k=40,
 )
 
+res = chat([
+        SystemMessage(
+            content="You are a nice AI bot that helps a user figure out what to eat in one short sentence"
+        ),
+        HumanMessage(content="I like tomatoes, what should I eat?"),
+    ])
 
+print(res.content)
 
