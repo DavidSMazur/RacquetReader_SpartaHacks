@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
+import Typed from 'typed.js';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Cursor from '../../components/Cursor/Cursor';
+import Cardy from '../../components/Card/Card';
+
 
 function Home() {
+    const el = useRef(null);
     const particlesInit = async (main) => {
         console.log(main);
     
@@ -12,7 +17,23 @@ function Home() {
         // starting from v2 you can add only the features you need reducing the bundle size
         await loadFull(main);
     };
+    useEffect(() => {
+        var options = {
+            strings: ["Hi, We're RaquetReader."],
+            typeSpeed: 50
+        };
 
+        // el.current will point to the <span> element in the render function
+        // This el.current.querySelector('.element') will help Typed.js to recognize where to type  
+        new Typed(el.current, options);
+
+        // Unmount Typed.js instance on component unmount to prevent memory leaks
+        return () => {
+            if (el.current) {
+                el.current.innerHTML = '';
+            }
+        };
+    }, []);
     return (
         <div style={{ position: "relative" }}>
             <NavigationBar />
@@ -86,7 +107,7 @@ function Home() {
                         },
                         "move": {
                           "enable": true,
-                          "speed": 6,
+                          "speed": 4,
                           "direction": "none",
                           "random": false,
                           "straight": false,
@@ -141,6 +162,12 @@ function Home() {
                       "retina_detect": true
                 }}
             />
+            <div id="intro-section" style={{ position: 'absolute', zIndex: 1, width: '100%', textAlign: 'center', paddingTop: '50px', paddingBottom: '50px' }}>
+                {/* You can use styles to adjust positioning, font color, size, etc. of the text */}
+                <h1 style={{ color: 'white' }} ref={el}></h1> 
+            </div>
+            <Cardy />
+            <Cursor />
         </div>
     );
 }
