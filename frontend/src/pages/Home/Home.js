@@ -1,14 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
-import Typed from 'typed.js';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import Cursor from '../../components/Cursor/Cursor';
-import Cardy from '../../components/Card/Card';
-
 
 function Home() {
-    const el = useRef(null);
     const particlesInit = async (main) => {
         console.log(main);
     
@@ -107,7 +102,7 @@ function Home() {
                         },
                         "move": {
                           "enable": true,
-                          "speed": 4,
+                          "speed": 6,
                           "direction": "none",
                           "random": false,
                           "straight": false,
