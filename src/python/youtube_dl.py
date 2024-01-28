@@ -4,7 +4,8 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 # Specify the YouTube URL
 # youtube_url = 'https://www.youtube.com/shorts/G7ZJNaszMrc'
-youtube_url = 'https://www.youtube.com/watch?v=oOsmGn2_piE'
+# youtube_url = 'https://www.youtube.com/watch?v=oOsmGn2_piE'
+youtube_url = 'https://youtu.be/kmwzGXRen3s?si=R2WfxvhnaI65Fdol&t=174'
 
 
 # Create a YouTube object
@@ -18,8 +19,8 @@ download_path = yt.streams.get_highest_resolution().download(data_dir)
 
 # Optional: specify the start and end times of the segment you want to save (in seconds)
 
-start_time = 12
-end_time = 16
+start_time = 110
+end_time = 1
 
 # Specify the output file for the segment
 output_file = Path(data_dir, 'serena_swing.mp4')
