@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
-<<<<<<< HEAD
 import Typed from 'typed.js';
-=======
-import Cardy from '../../components/Card/Card';
->>>>>>> f98ff0f686434268c74fc14fb3b831d744b67abb
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Cursor from '../../components/Cursor/Cursor';
@@ -23,7 +19,7 @@ function Home() {
     };
     useEffect(() => {
         var options = {
-            strings: ["Hi, We're RaquetReader."],
+            strings: ["Hi, We're RaqetReader."],
             typeSpeed: 50
         };
 
@@ -41,7 +37,6 @@ function Home() {
     return (
         <div style={{ position: "relative" }}>
             <NavigationBar />
-<<<<<<< HEAD
             <Particles
                 style={{
                     position: "fixed",
@@ -167,15 +162,11 @@ function Home() {
                       "retina_detect": true
                 }}
             />
-            <div id="intro-section" style={{ position: 'absolute', zIndex: 1, width: '100%', textAlign: 'center', paddingTop: '50px', paddingBottom: '50px' }}>
-                {/* You can use styles to adjust positioning, font color, size, etc. of the text */}
-                <h1 style={{ color: 'white' }} ref={el}></h1> 
-            </div>
+        <div id="intro-section">
+            <h2 ref={el}></h2>
+        </div>
             <Cardy />
             <Cursor />
-=======
-            <Cardy />
->>>>>>> f98ff0f686434268c74fc14fb3b831d744b67abb
         </div>
     );
 }
