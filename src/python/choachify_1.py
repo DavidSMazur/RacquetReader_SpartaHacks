@@ -1,10 +1,11 @@
 from langchain_community.llms import OpenAI
 from openai import OpenAI
-import names
+from names import coaches
 #from NLP_Main import out
 import os
 from dotenv import load_dotenv
 import jsonify
+from app import input_string
 
 load_dotenv()
 
@@ -14,9 +15,7 @@ def prompt():
 
 
     # Get the string from the request data
-  data = request.json
-  input_string = data.get('input_string')
-
+  
   client = OpenAI()
 
   out=input_string 

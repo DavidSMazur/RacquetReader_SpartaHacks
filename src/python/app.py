@@ -27,7 +27,7 @@ def process_video():
 def process_string():
     # Get the string from the request data
     data = request.json
-    input_string = data.get('input_string')
+    global input_string = data.get('input_string')
 
     # Process the string (you can replace this with your processing logic)
     print("Received string from frontend:", input_string)
