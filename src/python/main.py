@@ -9,13 +9,13 @@ from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
 scale_factor = .5
-file_number = '2'
+file_number = '4'
 
 # Load the YOLOv8 model
 model = YOLO('models/yolov8n-pose.pt')
 
 # Define video source
-video_path = str(Path('data/video/swing_short.mp4'))
+video_path = str(Path('data/video/swing.mp4'))
 video_source = video_path
 cap = cv2.VideoCapture(video_source)
 
@@ -133,3 +133,4 @@ center_df.to_csv(output_csv_path / f'center_history_{file_number}.csv')
 
 # Close the display window
 cv2.destroyAllWindows()
+print('end')
