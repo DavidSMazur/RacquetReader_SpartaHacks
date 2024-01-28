@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 from ultralytics import YOLO
 
-size_threshold = 0.5  # 50% of the frame size
 max_track_length = 900  # 1 minute at 15 fps
+scale_factor = 1
 folder_number = '0'
 
 # Load the YOLOv8 model
@@ -35,7 +35,7 @@ height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 # Define the codec and VideoWriter object
-out = cv2.VideoWriter('data/track-history/annotated_video.mp4', cv2.VideoWriter_fourcc(*'vp09'), fps, (width, height))
+out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'vp09'), fps, (width, height))
 
 # Store the center and wrist history
 center_history = defaultdict(lambda: [])
@@ -91,11 +91,11 @@ while cap.isOpened():
                 cv2.polylines(annotated_frame, [points], isClosed=False, color=(0, 255, 0), thickness=10)
 
             # Resize the annotated frame for display
-            scale_factor = 0.5
             annotated_frame = cv2.resize(annotated_frame, None, fx=scale_factor, fy=scale_factor)
 
             # Write the frame to the output video file
             out.write(annotated_frame)
+            print(f'writing to {video_path}')
 
             # Display the annotated frame
             cv2.imshow("YOLOv8 Tracking", annotated_frame)
@@ -107,6 +107,19 @@ while cap.isOpened():
         # Break the loop if the end of the video is reached
         break
 
+# Release the video capture object
+cap.release()
+
+# Release the video writer object
+try:
+    out.release()
+    print("VideoWriter released successfully.")
+except cv2.error as e:
+    print(f"Error releasing VideoWriter: {e}")
+
+# Save the last frame as an image
+cv2.imwrite(dir_path / 'last_frame.png', annotated_frame)
+
 # Convert the dictionaries to DataFrames
 wrist_df = pd.DataFrame.from_dict(wrist_history, orient='index')
 center_df = pd.DataFrame.from_dict(center_history, orient='index')
@@ -115,11 +128,5 @@ center_df = pd.DataFrame.from_dict(center_history, orient='index')
 wrist_df.to_csv(dir_path / 'wrist_history.csv')
 center_df.to_csv(dir_path / 'center_history.csv')
 
-# Release the video capture and writer objects and close the display window
-cap.release()
-out.release()
-
-# Save the last frame as an image
-cv2.imwrite(dir_path / 'last_frame.png', annotated_frame)
-
+# Close the display window
 cv2.destroyAllWindows()
