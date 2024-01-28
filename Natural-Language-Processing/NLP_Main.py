@@ -1,38 +1,42 @@
 from langchain_google_vertexai import VertexAI
-from langchain import PromptTemplate, LLMChain
+from langchain.chains import LLMChain
+from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-from langchain.agents import Tool
-from langchain.agents import tool
-from langchain.agents import AgentType
+from langchain.agents import Tool, AgentType
 from langchain.agents import initialize_agent
+from langchain.prompts import SystemMessage, HumanMessage
+from langchain.chains import ConversationChain
 import os
+import tools_all
+import prompt_template
 
-input="I like tomatoes, what should I eat?"
 
-load_dotenv()
 
-model = VertexAI(model_name="gemini-pro")
+def create_model(model_name="gemini-pro", verbose=True):
+    return VertexAI(
+        model_name=model_name,
+        verbose=verbose,
+        memory="chat_history",
+        max_output_tokens=256,
+        temperature=0.1,
+        top_p=0.8,
+        top_k=40,
+    )
 
-agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
+model = create_model()
+llm = create_model()
+tools=[knowlege_base]  # tool comes from tools_all import
 
-llm = VertexAI(
-    model_name=model,
-    llm=VertexAI(), 
-    verbose=True
-    
-    memory="chat_history", 
-    max_output_tokens=256,
-    temperature=0.1,
-    top_p=0.8,
-    top_k=40,
+agent = initialize_agent(
+    tools=tools,  # tools should be a list of tools
+    llm=llm,
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True,
 )
 
-out = chat([
-        SystemMessage(
-            content="You are a nice AI bot that helps a user figure out what to eat in one short sentence"
-        ),
-        HumanMessage(content=input),
-    ])
+prompt=PromptTemplate(
+    input_variables=["system_message", "human_message"],
+    template=template_prompt,
+)
 
-print(out.content)
-
+input_string = "I like tomatoes, what should I eat?"
