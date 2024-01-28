@@ -17,8 +17,8 @@ out="How to hit a better serve?"
 completion = client.chat.completions.create(
   model="gpt-3.5-turbo",
   messages=[
-    {"role": "system", "content": "You are a tennis coach, and you are {last_name.value()} Your personality is these traits: {last_name.value()}"},
-    {"role": "user", "content": "{out}"}
+    {"role": "system", "content": "You are a tennis coach, and your personality is these traits: {last_name.value()}. You help answer your players questions."},
+    {"role": "user", "content": out}
   ]
 )
 
