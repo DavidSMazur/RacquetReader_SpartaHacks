@@ -59,26 +59,33 @@ while cap.isOpened():
             track_ids = result.boxes.id.int().cpu().tolist()
             keypoints_list = result.keypoints.xy.cpu().tolist()
 
+            # Initialize a flag to check if the first person (id == 0) has been processed
+            first_person_processed = False
+
             # For each tracked object, iterate over its keypoints.
             # If the keypoint is the right wrist (index 10), append its coordinates to the wrist_history for the current track_id.
             # If the wrist_history for the current track_id exceeds the maximum track length, remove the oldest entry.
             for track_id, keypoints in zip(track_ids, keypoints_list):
-                for i, keypoint in enumerate(keypoints):
-                    x, y = keypoint[:2]  # Only take the first two values
-                    if i == 10:  # If the keypoint is the right wrist
-                        wrist_history[track_id].append((float(x), float(y)))  # x, y center point
-                        if len(wrist_history[track_id]) > max_track_length:
-                            wrist_history[track_id].pop(0)
+                if track_id == 0 and not first_person_processed:
+                    for i, keypoint in enumerate(keypoints):
+                        x, y = keypoint[:2]  # Only take the first two values
+                        if i == 10:  # If the keypoint is the right wrist
+                            wrist_history[track_id].append((float(x), float(y)))  # x, y center point
+                            if len(wrist_history[track_id]) > max_track_length:
+                                wrist_history[track_id].pop(0)
+                            first_person_processed = True
 
             # For each bounding box and its corresponding track_id, extract the box's coordinates.
             # Append the center point of the box (x, y) to the tracking history for the current track_id.
             # If the tracking history for the current track_id exceeds the maximum track length, remove the oldest entry.
             for box, track_id in zip(boxes, track_ids):
-                x, y, w, h = box
-                track = center_history[track_id]
-                track.append((float(x), float(y)))  # x, y center point
-                if len(track) > max_track_length:
-                    track.pop(0)
+                if track_id == 0 and not first_person_processed:
+                    x, y, w, h = box
+                    track = center_history[track_id]
+                    track.append((float(x), float(y)))  # x, y center point
+                    if len(track) > max_track_length:
+                        track.pop(0)
+                    first_person_processed = True
 
             # Visualize the results on the frame
             annotated_frame = result.plot()
