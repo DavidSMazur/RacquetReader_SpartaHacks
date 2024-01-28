@@ -1,6 +1,3 @@
-#main
-
-from langchain_google_vertexai import VertexAI
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
@@ -8,47 +5,34 @@ from langchain.agents import Tool, AgentType
 from langchain.agents import initialize_agent
 from langchain.chains import ConversationChain
 import os
+from typing import List, Union
 from tools_all import knowlege_base
 from prompt_template import template_prompt
-from langchain.agents import Tool
-from vertexai.preview.generative_models import GenerativeModel, Part
+from langchain.prompts import StringPromptTemplate
+from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '\\\\wsl.localhost\\Ubuntu\\home\\euphoric-axiom-412520-2679fca6ffa1.json'
-
-
-
-
-def create_model(model_name="gemini-pro", verbose=True):
-    return VertexAI(
-        project="euphoric-axiom-412520",
-        model_name=model_name,
-        verbose=verbose,
-        memory="chat_history",
-        max_output_tokens=256,
-        temperature=0.1,
-        top_p=0.8,
-        top_k=40,
-    )
-
-llm = create_model()
-tools=[knowlege_base]  # tool comes from tools_all import
-
-agent = initialize_agent(
-    tools=tools,  # tools should be a list of tools
-    llm=llm,
-    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-    verbose=True,
+knowlege_base_tool = Tool(
+    name="Tennis Knowledge Base", 
+    func=knowlege_base,
+    description="Useful for answering questions about tennis technique, rules, training and strategy"
 )
 
-prompt=PromptTemplate(
-    input_variables=["system_message", "human_message"],
-    template=template_prompt,
-)
+tools = [knowlege_base_tool]
 
-input_string = "I like tomatoes, what should I eat?"
+llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=os.environ['OpenAI_api_key'])
 
-response = agent.generate_response(input_string, prompt)
 
-# Print the response to the console.
-print(response)
+class CustomPromptTemplate(StringPromptTemplate):
+    template: str
+    tools: List[Tool]
+
+agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION)
+
+input_string = "What is the capital of Alabama?"
+
+print(agent.run(input_string))
