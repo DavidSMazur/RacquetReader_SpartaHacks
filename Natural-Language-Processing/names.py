@@ -14,30 +14,3 @@ coaches = {'Richard Williams': {'fatherly', 'ambitious', 'supportive', 'kind', '
  'Nick Bollettieri': {'innovative', 'versatile', 'strategic', 'motivational', 'dedicated', 'experienced'},
   'Paul Annacone': {'analytical', 'calm', 'strategic', 'expertise', 'collaborative', 'patient'}}
 names = []
-
-class HTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        # Parse the query parameters from the request URL
-        parsed_url = urlparse(self.path)
-        query_params = parse_qs(parsed_url.query)
-
-        # Extract the 'name' parameter from the query parameters
-        name = query_params.get('name', [''])[0]
-
-        # Store the name in the names list
-        names.append(name)
-
-        # Send a response back to the client
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-        response = {'message': f'Name "{name}" stored successfully'}
-        self.wfile.write(json.dumps(response).encode('utf-8'))
-
-def run_server(server_class=HTTPServer, handler_class=HTTPRequestHandler, port=8000):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    print(f'Starting server on port {port}...')
-    httpd.serve_forever()
-
