@@ -1,4 +1,6 @@
 .venv/
 
-data/track_history_*
+output/image/*
+output/video/*
+output/csv/*
 
