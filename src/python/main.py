@@ -26,9 +26,11 @@ output_video_path = output_path / 'video' / f'output_video_{file_number}.mp4'
 output_image_path = output_path / 'image' / f'output_image_{file_number}.png'
 output_csv_path = output_path / 'csv'
 
-# Create the directory if it doesn't exist
-if not output_path.exists():
-    output_path.mkdir(parents=True, exist_ok=True)
+# Create the directories if they don't exist
+output_path.mkdir(parents=True, exist_ok=True)
+output_path.joinpath('video').mkdir(parents=True, exist_ok=True)
+output_path.joinpath('image').mkdir(parents=True, exist_ok=True)
+output_path.joinpath('csv').mkdir(parents=True, exist_ok=True)
 
 # Get the video's width, height, and frames per second
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
