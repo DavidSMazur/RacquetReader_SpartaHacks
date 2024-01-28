@@ -8,7 +8,7 @@ function NavigationBar() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" sticky="top"> {/* Fixed position */}
             <Container>
-                <Navbar.Brand as={Link} to="/">Eshaan</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">RaquetReader</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">

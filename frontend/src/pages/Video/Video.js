@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import Cursor from '../../components/Cursor/Cursor';
-import { Button, Container, Row, Col, Image } from 'react-bootstrap';
+import { Button, Container, Row, Col, Image, Form } from 'react-bootstrap';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Ric from '../../images/coaches/richardwilliams.jpg';
@@ -13,6 +13,9 @@ import Boris from '../../images/coaches/boris.webp';
 function Video() {
     const [videoFile, setVideoFile] = useState(null);
     const [videoURL, setVideoURL] = useState(null);
+    const [userInput, setUserInput] = useState(''); // State to hold user input
+    const [response, setResponse] = useState(''); // State to hold response
+
     const coaches = [
         { key: 1, name: 'Richard Williams', img:Ric  },
         { key: 2, name: 'Goran Ivanisevic', img: Goran },
@@ -27,30 +30,58 @@ function Video() {
 
     const handleUpload = async (event) => {
       event.preventDefault();
-  
+
       if (videoFile) {
           const formData = new FormData();
           formData.append('video', videoFile);
-  
+
           try {
+              // Upload the video to backend
               const response = await fetch('http://your-backend-api-url/process_video', {
                   method: 'POST',
                   body: formData,
               });
-  
+
               if (!response.ok) {
                   throw new Error('Failed to upload video');
               }
-  
+
               // Assuming the backend API returns a video URL
               const processedVideoURL = await response.text();
               setVideoURL(processedVideoURL);
+
+              // Download the video file
+              const a = document.createElement('a');
+              a.href = processedVideoURL;
+              a.download = 'output_video.mp4';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
           } catch (error) {
               console.error('Error:', error);
           }
       }
   };
-  
+  const handleUserInput = (event) => {
+    setUserInput(event.target.value); // Update user input state
+};
+
+const handleSubmit = (event) => {
+    event.preventDefault();
+    // Send user input to backend API and set response state with the received response
+    // For example:
+    // fetch('http://your-backend-api-url/process_input', {
+    //     method: 'POST',
+    //     body: JSON.stringify({ input: userInput }),
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // })
+    // .then(response => response.text())
+    // .then(data => setResponse(data))
+    // .catch(error => console.error('Error:', error));
+};
+
 
     const imageStyle = {
         width: "100px", 
@@ -215,6 +246,17 @@ function Video() {
                     <input type="file" accept="video/*" onChange={handleFileChange} className="mb-2"/>
                     <Button variant="primary" onClick={handleUpload}>Submit</Button>
                   </Col>
+
+                  <Col sm={12} className="d-flex flex-column align-items-center">
+    <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Form.Group controlId="userInput">
+            <Form.Label style={{ color:"white" }}>Talk to your Coach:</Form.Label>
+            <Form.Control type="text" value={userInput} placeholder="How can I improve my serve?" onChange={handleUserInput} />
+        </Form.Group>
+        <Button variant="primary" type="submit">Submit</Button>
+    </Form>
+    <div>{response}</div> {/* Display response */}
+</Col>
               </Row>
           </Container>
       </div>

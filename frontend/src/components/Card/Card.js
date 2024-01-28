@@ -9,7 +9,7 @@ function Cardy() {
   return (
     <Row className="justify-content-center align-items-center" style={{ minHeight: '70vh', paddingTop: '200px' }}>
       <Col md={4}>
-        <Card style={{ width: '100%' }}>
+        <Card style={{ width: '100%', backgroundColor: '#333', color: '#fff' }}>
           <Card.Body>
             <Card.Text>
               Combining computer vision and natural language processing, our machine learning tennis coach can do it all!
