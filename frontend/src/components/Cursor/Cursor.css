@@ -1,0 +1,15 @@
+* {
+    cursor:none;
+}
+
+.cursor {
+    background-color: cyan;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;  /* high z-index value to ensure it's on top */
+    pointer-events: none;  /* disables click interactions on the cursor itself */
+}
