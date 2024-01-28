@@ -14,7 +14,7 @@ function Home() {
     };
     useEffect(() => {
         var options = {
-            strings: ["Hi, We're RaquetReader."],
+            strings: ["Hi, We're RaqetReader."],
             typeSpeed: 50
         };
 
@@ -157,10 +157,9 @@ function Home() {
                       "retina_detect": true
                 }}
             />
-            <div id="intro-section" style={{ position: 'absolute', zIndex: 1, width: '100%', textAlign: 'center', paddingTop: '50px', paddingBottom: '50px' }}>
-                {/* You can use styles to adjust positioning, font color, size, etc. of the text */}
-                <h1 style={{ color: 'white' }} ref={el}></h1> 
-            </div>
+        <div id="intro-section">
+            <h2 ref={el}></h2>
+        </div>
             <Cardy />
             <Cursor />
         </div>
