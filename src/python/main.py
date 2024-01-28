@@ -8,8 +8,8 @@ import pandas as pd
 from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
-scale_factor = .25
-folder_number = '0'
+scale_factor = .5
+file_number = '0'
 
 # Load the YOLOv8 model
 model = YOLO('models/yolov8n-pose.pt')
@@ -19,15 +19,16 @@ video_path = str(Path('data/video/swing_short.mp4'))
 video_source = video_path
 cap = cv2.VideoCapture(video_source)
 
-# Define the directory
-dir_path = Path(f'data/track_history_{folder_number}')
+# Define directories for saving the output files
+data_path = Path(f'data')
+output_path = Path(f'output')
+output_video_path = output_path / 'video' / f'output_video_{file_number}.mp4'
+output_image_path = output_path / 'image' / f'output_image_{file_number}.png'
+output_csv_path = output_path / 'csv'
 
 # Create the directory if it doesn't exist
-if not dir_path.exists():
-    dir_path.mkdir(parents=True, exist_ok=True)
-
-# Define the full path for the video file
-video_path = dir_path / f'output_video_{folder_number}.mp4'
+if not data_path.exists():
+    data_path.mkdir(parents=True, exist_ok=True)
 
 # Get the video's width, height, and frames per second
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -35,7 +36,7 @@ height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 # Define the codec and VideoWriter object
-out = cv2.VideoWriter(str(video_path), cv2.VideoWriter_fourcc(*'vp09'), fps, (width, height))
+out = cv2.VideoWriter(str(output_video_path), cv2.VideoWriter_fourcc(*'vp09'), fps, (width, height))
 
 # Store the center and wrist history
 center_history = defaultdict(lambda: [])
@@ -118,15 +119,15 @@ except cv2.error as e:
     print(f"Error releasing VideoWriter: {e}")
 
 # Save the last frame as an image
-cv2.imwrite(dir_path / f'last_frame_{folder_number}.png', annotated_frame)
+cv2.imwrite(output_image_path, annotated_frame)
 
 # Convert the dictionaries to DataFrames
 wrist_df = pd.DataFrame.from_dict(wrist_history, orient='index')
 center_df = pd.DataFrame.from_dict(center_history, orient='index')
 
 # Save the DataFrames to CSV files
-wrist_df.to_csv(dir_path / f'wrist_history_{folder_number}.csv')
-center_df.to_csv(dir_path / f'center_history_{folder_number}.csv')
+wrist_df.to_csv(output_csv_path / f'wrist_history_{file_number}.csv')
+center_df.to_csv(output_csv_path / f'center_history_{file_number}.csv')
 
 # Close the display window
 cv2.destroyAllWindows()

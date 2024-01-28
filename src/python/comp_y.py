@@ -12,17 +12,20 @@ def calculate_normalized_height_difference(df_0, df_1, height):
 
 def main():
     # Define folder number
-    folder_number_0 = '0'
-    folder_number_1 = '1'
+    file_number_0 = '0'
+    file_number_1 = '1'
 
     # Load the center history CSV files
     dir_path = Path('data/track_history')
     height = 1080  # Adjust this value based on your video height
-    center_df_0 = pd.read_csv(dir_path / f'center_history_{folder_number_0}.csv', index_col=0)
-    center_df_1 = pd.read_csv(dir_path / f'center_history_{folder_number_1}.csv', index_col=0)
+    center_df_0 = pd.read_csv(dir_path / f'center_history_{file_number_0}.csv', index_col=0)
+    center_df_1 = pd.read_csv(dir_path / f'center_history_{file_number_1}.csv', index_col=0)
 
     # Calculate the normalized height difference
     result_df = calculate_normalized_height_difference(center_df_0, center_df_1, height)
 
     # Display the result dataframe
     print(result_df)
+
+if __name__ == "__main__":
+    main()
