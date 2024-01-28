@@ -133,4 +133,3 @@ center_df.to_csv(output_csv_path / f'center_history_{file_number}.csv')
 
 # Close the display window
 cv2.destroyAllWindows()
-print('end')
