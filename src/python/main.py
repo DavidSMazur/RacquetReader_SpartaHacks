@@ -8,14 +8,14 @@ import pandas as pd
 from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
-scale_factor = .5
-file_number = '5'
+scale_factor = 1 # for video to save, the scale factor must be 1!
+file_number = '8'
 
 # Load the YOLOv8 model
 model = YOLO('models/yolov8n-pose.pt')
 
 # Define video source
-video_path = str(Path('data/video/federer.mp4'))
+video_path = str(Path('data/video/coach_double.mp4'))
 video_source = video_path
 cap = cv2.VideoCapture(video_source)
 
