@@ -9,7 +9,7 @@ from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
 scale_factor = .5
-file_number = '0'
+file_number = '1'
 
 # Load the YOLOv8 model
 model = YOLO('models/yolov8n-pose.pt')
@@ -27,8 +27,8 @@ output_image_path = output_path / 'image' / f'output_image_{file_number}.png'
 output_csv_path = output_path / 'csv'
 
 # Create the directory if it doesn't exist
-if not data_path.exists():
-    data_path.mkdir(parents=True, exist_ok=True)
+if not output_path.exists():
+    output_path.mkdir(parents=True, exist_ok=True)
 
 # Get the video's width, height, and frames per second
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -96,7 +96,7 @@ while cap.isOpened():
 
             # Write the frame to the output video file
             out.write(annotated_frame)
-            # print(f'writing to {video_path}')
+            print(f'writing to {output_video_path}')
 
             # Display the annotated frame
             cv2.imshow("YOLOv8 Tracking", annotated_frame)
