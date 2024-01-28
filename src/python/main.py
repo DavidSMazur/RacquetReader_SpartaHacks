@@ -1,4 +1,4 @@
-# TODO: fix annotated_video.mp4 (it does not open probably because it is corrupted. Hex editor showed little in the .mp4)
+# TODO: sometimes the code saves the output video correctly, see print 'VideoWriter released successfully'
 
 from collections import defaultdict
 from pathlib import Path
@@ -8,7 +8,7 @@ import pandas as pd
 from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
-scale_factor = .5
+scale_factor = 1
 file_number = '1'
 
 # Load the YOLOv8 model
