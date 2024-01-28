@@ -2,29 +2,55 @@ import React, { useState } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import Cursor from '../../components/Cursor/Cursor';
 import { Button, Container, Row, Col, Image } from 'react-bootstrap';
-import Serena from '../../images/serena.jpg';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Ric from '../../images/coaches/richardwilliams.jpg';
+import Nick from '../../images/coaches/nick.webp';
+import Ivan from '../../images/coaches/ivan.webp';
+import Goran from '../../images/coaches/nick.webp';
+import Boris from '../../images/coaches/boris.webp';
 
 function Video() {
     const [videoFile, setVideoFile] = useState(null);
     const [videoURL, setVideoURL] = useState(null);
     const coaches = [
-        { key: 1, name: 'Serena Williams', img:Serena  },
-        { key: 2, name: 'Jane Doe', img: 'img2.jpg' },
+        { key: 1, name: 'Richard Williams', img:Ric  },
+        { key: 2, name: 'Goran Ivanisevic', img: Goran },
+        { key: 3, name: 'Boris Becker', img: Boris },
+        { key: 4, name: 'Nick Bollettieri', img: Nick },
+        { key: 5, name: 'Ivan Lendl', img: Ivan },
     ];
 
     const handleFileChange = (event) => {
         setVideoFile(event.target.files[0]);
     }
 
-    const handleUpload = (event) => {
-        event.preventDefault();
-
-        if(videoFile) {
-            setVideoURL(URL.createObjectURL(videoFile));
-        }
-    }
+    const handleUpload = async (event) => {
+      event.preventDefault();
+  
+      if (videoFile) {
+          const formData = new FormData();
+          formData.append('video', videoFile);
+  
+          try {
+              const response = await fetch('http://your-backend-api-url/process_video', {
+                  method: 'POST',
+                  body: formData,
+              });
+  
+              if (!response.ok) {
+                  throw new Error('Failed to upload video');
+              }
+  
+              // Assuming the backend API returns a video URL
+              const processedVideoURL = await response.text();
+              setVideoURL(processedVideoURL);
+          } catch (error) {
+              console.error('Error:', error);
+          }
+      }
+  };
+  
 
     const imageStyle = {
         width: "100px", 
@@ -145,7 +171,7 @@ function Video() {
                             "size": 40,
                             "duration": 2,
                             "opacity": 8,
-                            "speed": 3
+                            "speed": 1
                           },
                           "repulse": {
                             "distance": 200,
@@ -165,6 +191,7 @@ function Video() {
           <Cursor />
 
           <Container fluid style = {{ zIndex: 1, position: 'relative' }}>
+          <h3 style={{ color:"#32CD32", paddingTop: "50px", paddingBottom: "50px" }}>Choose your Coach!</h3>
               <Row className="mt-4">
                   <Col sm={1}>
                   {coaches.map((coach) => (
@@ -184,7 +211,7 @@ function Video() {
                   </Col>
 
                   <Col sm={2} className="d-flex flex-column align-items-center">
-                    <Button variant="primary" className="mb-2">Record</Button>
+
                     <input type="file" accept="video/*" onChange={handleFileChange} className="mb-2"/>
                     <Button variant="primary" onClick={handleUpload}>Submit</Button>
                   </Col>
