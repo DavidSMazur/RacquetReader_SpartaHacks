@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
+<<<<<<< HEAD
 import Typed from 'typed.js';
+=======
+import Cardy from '../../components/Card/Card';
+>>>>>>> f98ff0f686434268c74fc14fb3b831d744b67abb
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Cursor from '../../components/Cursor/Cursor';
@@ -37,6 +41,7 @@ function Home() {
     return (
         <div style={{ position: "relative" }}>
             <NavigationBar />
+<<<<<<< HEAD
             <Particles
                 style={{
                     position: "fixed",
@@ -168,6 +173,9 @@ function Home() {
             </div>
             <Cardy />
             <Cursor />
+=======
+            <Cardy />
+>>>>>>> f98ff0f686434268c74fc14fb3b831d744b67abb
         </div>
     );
 }
