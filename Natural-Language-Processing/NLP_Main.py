@@ -11,11 +11,17 @@ import os
 from tools_all import knowlege_base
 from prompt_template import template_prompt
 from langchain.agents import Tool
+from vertexai.preview.generative_models import GenerativeModel, Part
 
-vertexai.init(project="euphoric-axiom-412520", location="us-central1")
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '\\\\wsl.localhost\\Ubuntu\\home\\euphoric-axiom-412520-2679fca6ffa1.json'
+
+
+
 
 def create_model(model_name="gemini-pro", verbose=True):
     return VertexAI(
+        project="euphoric-axiom-412520",
         model_name=model_name,
         verbose=verbose,
         memory="chat_history",
