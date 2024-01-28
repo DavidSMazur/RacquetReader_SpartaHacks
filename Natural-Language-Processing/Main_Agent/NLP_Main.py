@@ -1,17 +1,16 @@
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
-from langchain.agents import Tool, AgentType
-from langchain.agents import initialize_agent
-from langchain.chains import ConversationChain
-import os
-from typing import List, Union
+from langchain.agents import Tool, AgentExecutor
+from langchain.llms import OpenAI
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
 from tools_all import knowlege_base
 from prompt_template import template_prompt
-from langchain.prompts import StringPromptTemplate
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
-from dotenv import load_dotenv
+from langchain_community.llms import OpenAI
+import os
+
+
 
 load_dotenv()
 
@@ -35,4 +34,4 @@ agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.STRUCTURED_CHAT_Z
 
 input_string = "What is the capital of Alabama?"
 
-print(agent.run(input_string))
+out=agent.run(input_string)
