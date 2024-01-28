@@ -23,5 +23,19 @@ def process_video():
     processed_video_path = 'temp/processed_video.mp4'  # Specify the path of the processed video
     return send_file(processed_video_path, as_attachment=True)
 
+@app.route('/api/process_string', methods=['POST'])
+def process_string():
+    # Get the string from the request data
+    data = request.json
+    input_string = data.get('input_string')
+
+    # Process the string (you can replace this with your processing logic)
+    print("Received string from frontend:", input_string)
+
+    # You can perform any processing here
+    
+    # Return an empty response
+    return '', 200
+
 if __name__ == '__main__':
     app.run(debug=True)
