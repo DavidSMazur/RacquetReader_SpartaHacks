@@ -8,7 +8,7 @@ import pandas as pd
 from ultralytics import YOLO
 
 max_track_length = 900  # 1 minute at 15 fps
-scale_factor = 1
+scale_factor = .25
 folder_number = '0'
 
 # Load the YOLOv8 model
@@ -27,7 +27,7 @@ if not dir_path.exists():
     dir_path.mkdir(parents=True, exist_ok=True)
 
 # Define the full path for the video file
-video_path = dir_path / 'output_video.mp4'
+video_path = dir_path / f'output_video_{folder_number}.mp4'
 
 # Get the video's width, height, and frames per second
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -95,7 +95,7 @@ while cap.isOpened():
 
             # Write the frame to the output video file
             out.write(annotated_frame)
-            print(f'writing to {video_path}')
+            # print(f'writing to {video_path}')
 
             # Display the annotated frame
             cv2.imshow("YOLOv8 Tracking", annotated_frame)
@@ -118,15 +118,15 @@ except cv2.error as e:
     print(f"Error releasing VideoWriter: {e}")
 
 # Save the last frame as an image
-cv2.imwrite(dir_path / 'last_frame.png', annotated_frame)
+cv2.imwrite(dir_path / f'last_frame_{folder_number}.png', annotated_frame)
 
 # Convert the dictionaries to DataFrames
 wrist_df = pd.DataFrame.from_dict(wrist_history, orient='index')
 center_df = pd.DataFrame.from_dict(center_history, orient='index')
 
 # Save the DataFrames to CSV files
-wrist_df.to_csv(dir_path / 'wrist_history.csv')
-center_df.to_csv(dir_path / 'center_history.csv')
+wrist_df.to_csv(dir_path / f'wrist_history_{folder_number}.csv')
+center_df.to_csv(dir_path / f'center_history_{folder_number}.csv')
 
 # Close the display window
 cv2.destroyAllWindows()
