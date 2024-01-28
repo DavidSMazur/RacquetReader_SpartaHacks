@@ -5,16 +5,16 @@ from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool, StructuredTool, tool
 from typing import Optional, Type
 from langchain.callbacks.manager import (AsyncCallbackManagerForToolRun,CallbackManagerForToolRun,)
-from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain.agents import tool
+from langchain.agents import Tool
+
 
 
 #for knowlege_store
 import vertexai
 from vertexai.language_models import TextGenerationModel
 from vertexai.language_models import GroundingSource
-
 
 def knowlege_store():
   vertexai.init(project="euphoric-axiom-412520", location="us-central1")

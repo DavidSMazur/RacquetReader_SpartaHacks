@@ -1,16 +1,18 @@
+#main
+
 from langchain_google_vertexai import VertexAI
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.memory import ConversationBufferMemory
 from langchain.agents import Tool, AgentType
 from langchain.agents import initialize_agent
-from langchain.prompts import SystemMessage, HumanMessage
 from langchain.chains import ConversationChain
 import os
-import tools_all
-import prompt_template
+from tools_all import knowlege_base
+from prompt_template import template_prompt
+from langchain.agents import Tool
 
-
+vertexai.init(project="euphoric-axiom-412520", location="us-central1")
 
 def create_model(model_name="gemini-pro", verbose=True):
     return VertexAI(
@@ -23,7 +25,6 @@ def create_model(model_name="gemini-pro", verbose=True):
         top_k=40,
     )
 
-model = create_model()
 llm = create_model()
 tools=[knowlege_base]  # tool comes from tools_all import
 
@@ -40,3 +41,8 @@ prompt=PromptTemplate(
 )
 
 input_string = "I like tomatoes, what should I eat?"
+
+response = agent.generate_response(input_string, prompt)
+
+# Print the response to the console.
+print(response)
